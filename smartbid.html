@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SmartBid – AI Powered Bid Compliance &amp; Verification</title>
+<style>
+:root{--bg:#fff;--surface:#fff;--surface-2:#f4f7fb;--line:#c9d3df;--text:#1b2733;--muted:#586a7c;--brand:#0f3d78;--link:#0b5cad;--saffron:#e8891a;--green-flag:#2a8a45;--ok:#1b6e3a;--ok-bg:#e4f3e9;--warn:#805000;--warn-bg:#fff2d2;--bad:#a4262c;--bad-bg:#fde9e9;--info:#0f3d78;--info-bg:#e5eefa;--hl:#fff1a8;--focus:#1f6bb5;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#fff}}
+html{scroll-padding-top:env(safe-area-inset-top,0px);font-size:100%}
+*,*::before,*::after{box-sizing:border-box}
+html,body{background:#fff}
+body{margin:0;color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:.9375rem;line-height:1.5}
+a{color:var(--link)}button,input,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.sr,.skip{position:absolute;left:-9999px}.skip:focus{left:8px;top:8px;background:#fff;padding:8px;z-index:50}
+.tri{height:4px;background:linear-gradient(90deg,var(--saffron) 33%,#fff 33% 66%,var(--green-flag) 66%)}
+.util{background:var(--surface-2);border-bottom:1px solid var(--line);font-size:.78rem}
+.util .in{max-width:1320px;margin:0 auto;padding:3px 16px;display:flex;gap:10px;align-items:center;justify-content:flex-end;flex-wrap:wrap}
+.util button{border:1px solid var(--line);background:#fff;padding:0 6px;cursor:pointer}.util .sp{margin-right:auto;color:var(--muted)}
+header.top{border-bottom:1px solid var(--line)}
+header.top .in{max-width:1320px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text);margin-right:auto}
+.brand b{display:block;font-size:1.25rem;line-height:1.1;color:var(--brand)}.brand span{font-size:.78rem;color:var(--muted)}
+.search{display:flex;flex:1 1 260px;max-width:420px}
+.search input{flex:1;min-width:0;border:1px solid var(--line);border-right:0;padding:7px 10px}
+.search button{border:1px solid var(--brand);background:var(--brand);color:#fff;padding:0 14px;cursor:pointer}
+.hbtn{position:relative;border:1px solid var(--line);padding:6px 10px;cursor:pointer;background:#fff}
+.badge{position:absolute;top:-7px;right:-7px;background:var(--bad);color:#fff;border-radius:9px;font-size:.7rem;min-width:18px;height:18px;line-height:18px;text-align:center;font-weight:700}
+.profile{display:flex;align-items:center;gap:8px;font-size:.82rem;line-height:1.25}
+.avatar{width:34px;height:34px;border-radius:50%;background:var(--brand);color:#fff;display:grid;place-items:center;font-weight:600}
+.pop{position:absolute;right:0;top:calc(100% + 6px);width:min(340px,86vw);background:#fff;border:1px solid var(--line);box-shadow:0 6px 18px rgba(0,0,0,.18);z-index:20}
+.pop h3{margin:0;padding:8px 12px;font-size:.85rem;background:var(--surface-2);border-bottom:1px solid var(--line)}
+.pop ul{list-style:none;margin:0;padding:0}.pop li{padding:8px 12px;border-bottom:1px solid var(--line);font-size:.85rem}.pop li small{display:block;color:var(--muted)}
+nav.main{background:var(--brand)}nav.main .in{max-width:1320px;margin:0 auto;padding:0 16px;display:flex;overflow-x:auto}
+nav.main button{background:none;border:0;color:#fff;padding:11px 16px;cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent}
+nav.main button[aria-current="page"]{border-bottom-color:var(--saffron);background:rgba(255,255,255,.12);font-weight:600}
+.shell{max-width:1320px;margin:0 auto;display:grid;grid-template-columns:224px minmax(0,1fr);align-items:start}
+aside.side{border-right:1px solid var(--line);min-height:60vh}
+aside.side h2{margin:0;padding:10px 16px;font-size:.85rem;background:var(--surface-2);border-bottom:1px solid var(--line);color:var(--muted)}
+aside.side ul{list-style:none;margin:0;padding:0}
+aside.side button{display:block;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);padding:10px 16px;cursor:pointer;border-left:4px solid transparent}
+aside.side button[aria-current="page"]{border-left-color:var(--saffron);background:var(--info-bg);font-weight:600;color:var(--info)}
+.menu-btn{display:none;margin:12px 16px 0;padding:8px 12px;background:#fff;border:1px solid var(--line);cursor:pointer}
+main{padding:18px 20px 40px;min-width:0;outline:none}
+.crumbs{font-size:.82rem;color:var(--muted);margin-bottom:6px}
+.crumbs button{color:var(--link);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;font-size:inherit}
+h1.pt{margin:0 0 14px;font-size:1.4rem}h1.pt small{display:block;font-size:.9rem;font-weight:400;color:var(--muted)}
+.panel{border:1px solid var(--line);margin-bottom:16px;background:#fff}
+.panel-h{padding:9px 14px;background:var(--surface-2);border-bottom:1px solid var(--line);font-weight:600;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.panel-b{padding:14px}.scroll{overflow-x:auto}
+table.tbl{width:100%;border-collapse:collapse;font-size:.9rem}
+.tbl th,.tbl td{padding:8px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.tbl th{background:var(--surface-2);white-space:nowrap}.tbl tr:last-child td{border-bottom:0}
+.strip{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);margin-bottom:16px}
+.strip div{padding:10px 14px;border-right:1px solid var(--line)}.strip div:last-child{border:0}
+.strip b{display:block;font-size:1.3rem}.strip span{font-size:.82rem;color:var(--muted)}
+.notice{border-left:4px solid var(--saffron);background:var(--warn-bg);padding:10px 14px;margin-bottom:16px;font-size:.88rem}
+dl.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));margin:0}
+dl.kv div{padding:9px 14px;border-bottom:1px solid var(--line);border-right:1px solid var(--line)}
+dl.kv dt{font-size:.78rem;color:var(--muted)}dl.kv dd{margin:0;font-weight:500}
+.chip{display:inline-block;padding:1px 8px;font-weight:600;font-size:.8rem;border:1px solid currentColor;white-space:nowrap}
+.chip.ok{color:var(--ok);background:var(--ok-bg)}.chip.warn{color:var(--warn);background:var(--warn-bg)}.chip.bad{color:var(--bad);background:var(--bad-bg)}.chip.info{color:var(--info);background:var(--info-bg)}.chip.mute{color:var(--muted);background:var(--surface-2)}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;border:1px solid var(--brand);background:#fff;color:var(--link);cursor:pointer;font-weight:600}
+.btn.primary{background:var(--brand);color:#fff}.btn[disabled]{opacity:.5;cursor:not-allowed}.btn.sm{padding:3px 10px;font-size:.85rem}
+.linkbtn{background:none;border:0;padding:0;color:var(--link);text-decoration:underline;cursor:pointer;font-weight:500}
+.tabs{display:flex;border-bottom:2px solid var(--line);overflow-x:auto;margin-bottom:16px;gap:2px}
+.tabs button{background:var(--surface-2);border:1px solid var(--line);border-bottom:0;padding:9px 16px;cursor:pointer;white-space:nowrap;margin-bottom:-2px}
+.tabs button[aria-selected="true"]{background:#fff;font-weight:600;border-bottom:2px solid #fff;color:var(--info);box-shadow:inset 0 3px 0 var(--saffron)}
+.docrow input{width:18px;height:18px;accent-color:var(--brand)}
+.actionbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:space-between;padding:12px 14px;border-top:1px solid var(--line);background:var(--surface-2)}
+.steps{list-style:none;margin:0;padding:0}
+.steps li{display:grid;grid-template-columns:28px 1fr;gap:6px;padding:9px 14px;border-bottom:1px solid var(--line)}
+.steps .ic{font-weight:700;text-align:center}.steps .done .ic{color:var(--ok)}.steps .wait{color:var(--muted)}.steps small{display:block;color:var(--muted)}
+.spin{display:inline-block;width:14px;height:14px;border:2px solid var(--line);border-top-color:var(--brand);border-radius:50%;animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.bar{height:6px;background:var(--surface-2)}.bar i{display:block;height:100%;background:var(--brand);transition:width .4s}
+.cmp{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;padding:14px}
+.cmp .s{border:1px solid var(--line);padding:12px}.cmp .s.c{border-color:var(--bad);background:var(--bad-bg)}
+.cmp .k{font-size:.78rem;color:var(--muted);font-weight:600}.cmp .d{font-weight:600}.cmp .v{font-size:1.3rem;font-weight:700;margin:6px 0 8px}.cmp .vs{align-self:center;font-weight:700;color:var(--muted)}
+.claim{padding:12px 14px;margin:0;border-bottom:1px solid var(--line)}
+.mismatch{margin:0 14px 14px;padding:10px 12px;background:var(--warn-bg);border:1px solid var(--warn);color:var(--warn);font-weight:600}
+.opts{border:0;margin:0;padding:14px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.opt{display:flex;gap:10px;border:1px solid var(--line);padding:10px 12px;cursor:pointer}
+.opt:has(input:checked){border-color:var(--brand);background:var(--info-bg)}.opt b{display:block}.opt span span{font-size:.82rem;color:var(--muted)}
+.remarks{padding:0 14px 14px}.remarks label{display:block;font-weight:600;margin-bottom:4px}
+.remarks textarea{width:100%;min-height:84px;padding:8px 10px;border:1px solid var(--line)}
+.err{color:var(--bad);font-weight:600;margin:8px 0 0}.rec{padding:14px}.rec:focus{outline:none}
+.res{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr)}
+.res-l{padding:18px 16px;display:flex;flex-direction:column;align-items:center;gap:12px;border-right:1px solid var(--line)}
+.ring{width:min(230px,70vw);height:auto}
+.ring-bg{fill:none;stroke:var(--line);stroke-width:16;opacity:.55}
+.ring-fg{fill:none;stroke-width:16;stroke-linecap:round;transition:stroke-dasharray 1.2s}
+.ring-fg.ok{stroke:var(--ok)}.ring-fg.warn{stroke:#d9821b}.ring-fg.bad{stroke:var(--bad)}
+.rn{font-size:46px;font-weight:700;fill:var(--text)}.rl{font-size:15px;font-weight:600;fill:var(--muted)}
+.risk{display:inline-flex;align-items:center;gap:8px;padding:5px 16px;border-radius:999px;font-weight:700;border:1px solid currentColor}
+.risk.ok{color:var(--ok);background:var(--ok-bg)}.risk.warn{color:var(--warn);background:var(--warn-bg)}.risk.bad{color:var(--bad);background:var(--bad-bg)}
+.mini{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);width:100%;max-width:380px}
+.mini div{padding:8px 6px;text-align:center;border-right:1px solid var(--line)}.mini div:last-child{border:0}.mini b{display:block;font-size:1.2rem}.mini span{font-size:.76rem;color:var(--muted)}
+.res-r{padding:18px 20px;display:flex;flex-direction:column;gap:10px}.kh{margin:0;font-size:1rem}
+.kfl{list-style:none;margin:0;padding:0;border:1px solid var(--line)}.kfl li{border-bottom:1px solid var(--line)}.kfl li:last-child{border:0}
+.kf{display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:9px 12px;background:#fff;border:0}button.kf{cursor:pointer}button.kf:hover{background:var(--info-bg)}
+.kf .kt{flex:1;font-weight:500}.kf small{color:var(--muted)}
+.dot{width:14px;height:14px;border-radius:50%;flex:none}.dot.hi{background:var(--bad)}.dot.md{background:#e07a1a}.dot.lo{background:#d4a800}.dot.ok{background:var(--ok)}
+.calc{margin:0;padding:10px 14px;border-top:1px solid var(--line);background:var(--surface-2);font-size:.84rem;color:var(--muted)}
+dialog{border:1px solid var(--line);padding:0;max-width:min(560px,94vw);width:100%}dialog::backdrop{background:rgba(10,20,30,.55)}
+.dlg-h{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--surface-2);border-bottom:1px solid var(--line);font-weight:600}
+.paper{margin:14px;padding:18px;background:#fbfbf8;color:#222;border:1px solid #cfcfc6;font-family:Georgia,serif}
+.paper h4{margin:0 0 10px;text-align:center}.paper table{width:100%;border-collapse:collapse}.paper td{padding:6px 8px;border:1px solid #d7d7cd}
+.paper tr.hl td{background:var(--hl);font-weight:700}.paper .pg{margin-top:10px;font-size:.75rem;color:#666;text-align:right}
+footer.foot{max-width:1320px;margin:0 auto;padding:14px 20px 30px;font-size:.8rem;color:var(--muted);border-top:1px solid var(--line)}
+@media (max-width:760px){.res{grid-template-columns:1fr}.res-l{border-right:0;border-bottom:1px solid var(--line)}}
+@media (max-width:900px){.shell{grid-template-columns:1fr}aside.side{display:none;min-height:0}aside.side.open{display:block}.menu-btn{display:inline-block}main{padding:14px 12px 30px}.strip{grid-template-columns:repeat(2,1fr)}.cmp{grid-template-columns:1fr}.cmp .vs{text-align:center}.search{order:5;max-width:none;flex-basis:100%}.profile .who{display:none}}
+@media (prefers-reduced-motion:reduce){.ring-fg,.bar i{transition:none}.spin{animation-duration:2s}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+<div class="tri" aria-hidden="true"></div>
+<div class="util"><div class="in">
+  <span class="sp">Officer workspace · Sample data for demonstration</span><span>Text size</span>
+  <button data-act="fs" data-v="90%" aria-label="Smaller text">A-</button>
+  <button data-act="fs" data-v="100%" aria-label="Default text">A</button>
+  <button data-act="fs" data-v="115%" aria-label="Larger text">A+</button>
+</div></div>
+<header class="top"><div class="in">
+  <a class="brand" href="#" data-act="nav" data-view="dashboard" aria-label="SmartBid home">
+    <svg width="42" height="42" viewBox="0 0 42 42" aria-hidden="true"><circle cx="21" cy="21" r="20" fill="#0f3d78"/><circle cx="21" cy="21" r="14" fill="none" stroke="#fff" stroke-width="1.5"/><path d="M13 22l5 5 11-12" fill="none" stroke="#e8891a" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div><b>SmartBid</b><span>AI Powered Bid Compliance &amp; Verification</span></div>
+  </a>
+  <form class="search" role="search" id="searchForm"><label class="sr" for="q">Search bids and tenders</label><input id="q" type="search" placeholder="Search bid number, tender or bidder"><button type="submit">Search</button></form>
+  <div style="position:relative">
+    <button class="hbtn" data-act="bell" aria-haspopup="true" aria-expanded="false" id="bell">Notifications<span class="badge" aria-label="3 unread">3</span></button>
+    <div class="pop" id="pop" hidden><h3>Notifications</h3><ul>
+      <li>Bid GEM/2026/B/48213 is ready for verification<small>Today, 09:12</small></li>
+      <li>Clarification received on GEM/2026/B/48176<small>Yesterday, 17:40</small></li>
+      <li>Tender T/2026/0917 closes in 2 days<small>Yesterday, 11:05</small></li></ul></div>
+  </div>
+  <div class="profile"><div class="avatar" aria-hidden="true">AR</div><div class="who"><b>Anitha Rajan</b><br>Procurement Officer</div></div>
+</div></header>
+<nav class="main" aria-label="Primary"><div class="in" id="topnav">
+  <button data-act="nav" data-view="dashboard">Home</button><button data-act="nav" data-view="bids">Bids</button><button data-act="nav" data-view="tenders">Tenders</button><button data-act="nav" data-view="mywork">My work</button><button data-act="nav" data-view="verification">Verification</button><button data-act="nav" data-view="reports">Reports</button>
+</div></nav>
+<button class="menu-btn" data-act="menu" aria-expanded="false" aria-controls="side">Menu</button>
+<div class="shell">
+  <aside class="side" id="side" aria-label="Section menu"><h2>Officer menu</h2><ul id="sidenav">
+    <li><button data-act="nav" data-view="dashboard">Dashboard</button></li><li><button data-act="nav" data-view="bids">Bids</button></li><li><button data-act="nav" data-view="tenders">Tenders</button></li><li><button data-act="nav" data-view="documents">Documents</button></li><li><button data-act="nav" data-view="verification">Verification</button></li><li><button data-act="nav" data-view="reports">Reports</button></li>
+  </ul></aside>
+  <main id="main" tabindex="-1"></main>
+</div>
+<footer class="foot">SmartBid is a prototype built for demonstration. All bids, bidders and figures shown are sample data. Verification findings support the officer; the officer makes every procurement decision.</footer>
+<dialog id="dlg" aria-labelledby="dlgT"><div class="dlg-h"><span id="dlgT">Source document</span><button class="btn sm" data-act="closedlg">Close</button></div><div id="dlgB"></div></dialog>
+
+<script>
+"use strict";
+var $=function(s,r){return (r||document).querySelector(s)};
+var esc=function(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})};
+var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+/* ---------- sample data ---------- */
+var S={view:'dashboard',bid:null,tab:'details',q:''};
+var TENDERS=[
+ {id:'T/2026/0917',t:'Supply of 400 laptops for district offices',dept:'Dept. of Electronics',est:'₹2,60,00,000',close:'01 Oct 2026',bids:3},
+ {id:'T/2026/0842',t:'Annual maintenance of office network',dept:'Dept. of Revenue',est:'₹48,00,000',close:'12 Oct 2026',bids:2},
+ {id:'T/2026/0790',t:'Printing of election stationery',dept:'Election Commission',est:'₹1,15,00,000',close:'20 Oct 2026',bids:1}];
+var BIDS=[
+ {id:'GEM/2026/B/48213',ten:'T/2026/0917',bidder:'Kaveri Systems Pvt Ltd',amt:'₹2,41,60,000',rec:'26 Sep 2026',status:'Ready for verification',cls:'info',sc:'issues'},
+ {id:'GEM/2026/B/48176',ten:'T/2026/0917',bidder:'Nilgiri Infotech LLP',amt:'₹2,52,00,000',rec:'25 Sep 2026',status:'Clarification received',cls:'warn',sc:'clean'},
+ {id:'GEM/2026/B/48101',ten:'T/2026/0842',bidder:'Sahyadri Networks',amt:'₹44,80,000',rec:'24 Sep 2026',status:'Ready for verification',cls:'info',sc:'clean'},
+ {id:'GEM/2026/B/47988',ten:'T/2026/0790',bidder:'Vaigai Press Works',amt:'₹1,09,50,000',rec:'22 Sep 2026',status:'Verified',cls:'ok',sc:'clean'}];
+var STEPS=[
+ {t:'Reading submitted documents',d:'Extracting text and tables from each file'},
+ {t:'Matching against tender requirements',d:'Eligibility, turnover, experience and certificates'},
+ {t:'Cross-checking figures across documents',d:'Prices, quantities and dates'},
+ {t:'Preparing findings for officer review',d:'Ranking by severity with source evidence'}];
+var DEC=[
+ {k:'accept',t:'Accept as compliant',st:'Accepted',d:'Bid meets the tender requirements'},
+ {k:'clar',t:'Seek clarification',st:'Clarification sought',d:'Ask the bidder to explain or correct'},
+ {k:'reject',t:'Reject bid',st:'Rejected',d:'Bid does not meet mandatory requirements'}];
+var RESULTS={
+ clean:{score:92,cls:'ok',risk:'Low risk',counts:[0,1,6],findings:[
+  {id:'f1',t:'Certificate valid until 31 Mar 2027',sev:'lo',lab:'Low',claim:'The ISO certificate expires within 6 months of the contract start. Confirm renewal plan.',
+   a:{doc:'ISO 9001 Certificate',page:1,rows:[['Holder','Bidder'],['Valid until','31 Mar 2027'],['Scope','IT hardware supply']],hl:1},
+   b:{doc:'Tender requirement',page:4,rows:[['Clause 6.2','Valid certificate at contract start'],['Contract period','12 months']],hl:0},msg:'Valid today, but expires mid-contract.'}]},
+ issues:{score:58,cls:'warn',risk:'Medium risk',counts:[1,2,4],findings:[
+  {id:'f1',t:'Quoted price differs between documents',sev:'hi',lab:'High',claim:'The price in the financial bid does not match the price in the covering letter.',
+   a:{doc:'Financial bid',page:3,rows:[['Item','Laptop x 400'],['Unit price','₹60,400'],['Total','₹2,41,60,000']],hl:2},
+   b:{doc:'Covering letter',page:1,rows:[['Subject','Offer for T/2026/0917'],['Total quoted','₹2,46,00,000'],['Validity','90 days']],hl:1},msg:'Totals differ by ₹4,40,000. Officer should seek clarification.'},
+  {id:'f2',t:'Turnover below the required minimum',sev:'md',lab:'Medium',claim:'Average annual turnover appears lower than the tender minimum.',
+   a:{doc:'CA turnover certificate',page:2,rows:[['FY 2023-24','₹6.1 crore'],['Average of 3 years','₹5.8 crore']],hl:1},
+   b:{doc:'Tender requirement',page:5,rows:[['Clause 4.1','Average turnover'],['Minimum','₹6.5 crore']],hl:1},msg:'₹5.8 crore is under ₹6.5 crore.'},
+  {id:'f3',t:'Delivery date not stated',sev:'lo',lab:'Low',claim:'No delivery schedule found in the technical bid.',
+   a:{doc:'Technical bid',page:0,rows:[['Warranty','36 months'],['Delivery schedule','Not found']],hl:1},
+   b:{doc:'Tender requirement',page:7,rows:[['Clause 9','Delivery within 45 days']],hl:0},msg:'Ask the bidder to confirm.'}]}};
+var STORE={};
+function V(b){return STORE[b.id]||(STORE[b.id]={stage:'idle',step:0,ran:0,open:null,decision:null,choice:null,remarks:'',error:'',
+ docs:[{n:'Technical bid',f:'technical_bid.pdf',p:14,s:'2.1 MB',on:true},{n:'Financial bid',f:'financial_bid.pdf',p:6,s:'640 KB',on:true},{n:'Covering letter',f:'cover_letter.pdf',p:1,s:'120 KB',on:true},{n:'CA turnover certificate',f:'turnover.pdf',p:3,s:'380 KB',on:true},{n:'ISO 9001 certificate',f:'iso.pdf',p:1,s:'210 KB',on:true}]})}
+function bidById(id){return BIDS.filter(function(x){return x.id===id})[0]}
+function needRemarks(b,c){return c!=='accept'}
+function hintText(b,v){return v.choice==='accept'?'Remarks are optional.':v.choice?'Remarks are required for this decision.':'Choose a decision to continue.'}
+function tenderOf(b){return TENDERS.filter(function(t){return t.id===b.ten})[0]}
+function chip(b){return '<span class="chip '+b.cls+'">'+esc(b.status)+'</span>'}
+function open(b,tab,lab){return '<button class="linkbtn" data-act="open" data-bid="'+b.id+'" data-tab="'+(tab||'details')+'">'+esc(lab||b.id)+'</button>'}
+function bidTable(list){
+  if(!list.length)return '<div class="panel-b">No bids match your search.</div>';
+  return '<div class="scroll"><table class="tbl"><thead><tr><th>Bid number</th><th>Bidder</th><th>Tender</th><th>Amount</th><th>Received</th><th>Status</th><th></th></tr></thead><tbody>'+
+  list.map(function(b){return '<tr><td>'+open(b)+'</td><td>'+esc(b.bidder)+'</td><td>'+esc(b.ten)+'</td><td>'+esc(b.amt)+'</td><td>'+esc(b.rec)+'</td><td>'+chip(b)+'</td><td>'+open(b,'ver','Verify')+'</td></tr>'}).join('')+'</tbody></table></div>'}
+function head(t,s){return '<h1 class="pt">'+esc(t)+(s?'<small>'+esc(s)+'</small>':'')+'</h1>'}
+
+/* ---------- views ---------- */
+function viewDashboard(){
+  var n=BIDS.filter(function(b){return b.status==='Ready for verification'}).length;
+  return head('Welcome, Anitha','Here is what needs your attention today')+
+  '<div class="strip"><div><b>'+BIDS.length+'</b><span>Bids received</span></div><div><b>'+n+'</b><span>Ready to verify</span></div><div><b>1</b><span>Clarification pending</span></div><div><b>'+TENDERS.length+'</b><span>Open tenders</span></div></div>'+
+  '<div class="notice">Tender T/2026/0917 closes in 2 days. Three bids have been received.</div>'+
+  '<section class="panel"><div class="panel-h">Recent bids</div>'+bidTable(BIDS)+'</section>'}
+function viewBids(){
+  var q=S.q.toLowerCase(),l=BIDS.filter(function(b){return !q||(b.id+b.bidder+b.ten).toLowerCase().indexOf(q)>-1});
+  return head('Bids',S.q?'Results for "'+S.q+'"':'All bids assigned to your office')+'<section class="panel">'+bidTable(l)+'</section>'}
+function viewMywork(){return head('My work','Bids waiting for your action')+'<section class="panel">'+bidTable(BIDS.filter(function(b){return b.cls!=='ok'}))+'</section>'}
+function viewVerification(){return head('Verification','Choose a bid to check against its tender')+'<section class="panel">'+bidTable(BIDS)+'</section>'}
+function viewTenders(){
+  return head('Tenders')+'<section class="panel"><div class="scroll"><table class="tbl"><thead><tr><th>Tender</th><th>Title</th><th>Department</th><th>Estimate</th><th>Closes</th><th>Bids</th></tr></thead><tbody>'+
+  TENDERS.map(function(t){return '<tr><td>'+esc(t.id)+'</td><td>'+esc(t.t)+'</td><td>'+esc(t.dept)+'</td><td>'+esc(t.est)+'</td><td>'+esc(t.close)+'</td><td>'+t.bids+'</td></tr>'}).join('')+'</tbody></table></div></section>'}
+function viewDocuments(){
+  var r='';BIDS.forEach(function(b){V(b).docs.forEach(function(d){r+='<tr><td>'+esc(d.n)+'</td><td>'+esc(d.f)+'</td><td>'+esc(b.id)+'</td><td>'+esc(d.s)+'</td></tr>'})});
+  return head('Documents','Files submitted with bids')+'<section class="panel"><div class="scroll"><table class="tbl"><thead><tr><th>Document</th><th>File</th><th>Bid</th><th>Size</th></tr></thead><tbody>'+r+'</tbody></table></div></section>'}
+function viewReports(){
+  var r=BIDS.map(function(b){var x=RESULTS[b.sc];return '<tr><td>'+esc(b.id)+'</td><td>'+esc(b.bidder)+'</td><td>'+x.score+'/100</td><td>'+x.risk+'</td></tr>'}).join('');
+  return head('Reports','Indicative compliance scores')+'<section class="panel"><div class="scroll"><table class="tbl"><thead><tr><th>Bid</th><th>Bidder</th><th>Score</th><th>Risk</th></tr></thead><tbody>'+r+'</tbody></table></div><p class="calc">Scores are indicative and support, not replace, the officer\'s judgement.</p></section>'}
+function viewBid(b){
+  var t=tenderOf(b),tabs=[['details','Details'],['ver','Verification']];
+  var body=S.tab==='ver'?verTab(b):
+  '<section class="panel"><div class="panel-h">Bid details '+chip(b)+'</div><dl class="kv"><div><dt>Bid number</dt><dd>'+esc(b.id)+'</dd></div><div><dt>Bidder</dt><dd>'+esc(b.bidder)+'</dd></div><div><dt>Quoted amount</dt><dd>'+esc(b.amt)+'</dd></div><div><dt>Received</dt><dd>'+esc(b.rec)+'</dd></div><div><dt>Tender</dt><dd>'+esc(t.id)+' · '+esc(t.t)+'</dd></div><div><dt>Department</dt><dd>'+esc(t.dept)+'</dd></div></dl></section>';
+  return '<div class="crumbs"><button data-act="nav" data-view="bids">Bids</button> / '+esc(b.id)+'</div>'+head(b.bidder,b.id)+
+  '<div class="tabs" role="tablist">'+tabs.map(function(x){return '<button role="tab" id="tab-'+x[0]+'" data-act="tab" data-tab="'+x[0]+'" aria-selected="'+(S.tab===x[0])+'">'+x[1]+'</button>'}).join('')+'</div>'+body}
+function verTab(b){
+  var v=V(b),n=v.docs.filter(function(d){return d.on}).length;
+  var h='<section class="panel"><div class="panel-h">1. Choose documents to check</div><div class="scroll"><table class="tbl"><tbody>'+
+  v.docs.map(function(d,i){return '<tr class="docrow"><td><input type="checkbox" data-doc="'+i+'" aria-label="Include '+esc(d.n)+'"'+(d.on?' checked':'')+'></td><td>'+esc(d.n)+'<br><small>'+esc(d.f)+'</small></td><td>'+d.p+' pp</td><td>'+esc(d.s)+'</td></tr>'}).join('')+'</tbody></table></div>'+
+  '<div class="actionbar"><span id="cnt">'+n+' of '+v.docs.length+' documents selected</span><span><label class="btn sm" for="addf">Add file</label><input class="sr" type="file" id="addf"> <button class="btn primary" id="verifyBtn" data-act="verify"'+((n===0||v.stage==='running')?' disabled':'')+'>'+(v.ran?'Verify again':'Verify bid')+'</button></span></div></section>'+
+  '<div id="procBox">'+(v.stage==='running'?procHtml(b,v):'')+'</div>';
+  if(v.stage==='done')h+=resHtml(b,v)+'<div id="evBox">'+(v.open?evHtml(b,v):'')+'</div><div id="decBox">'+decHtml(b,v)+'</div>';
+  return h}
+function procHtml(b,v){
+  var p=Math.round(v.step/STEPS.length*100);
+  return '<section class="panel" role="status" aria-live="polite"><div class="panel-h">2. Checking the bid</div><div class="bar"><i style="width:'+p+'%"></i></div><ul class="steps">'+
+  STEPS.map(function(s,i){var d=i<v.step,c=i===v.step;return '<li class="'+(d?'done':'wait')+'"><span class="ic">'+(d?'✓':c?'<span class="spin"></span>':'•')+'</span><span>'+esc(s.t)+'<small>'+esc(s.d)+'</small></span></li>'}).join('')+'</ul></section>'}
+function resHtml(b,v){
+  var r=RESULTS[b.sc],c=2*Math.PI*90;
+  return '<section class="panel" id="resPanel"><div class="panel-h">3. Result</div><div class="res"><div class="res-l">'+
+  '<svg class="ring" viewBox="0 0 220 220" role="img" aria-label="Compliance score '+r.score+' out of 100"><circle class="ring-bg" cx="110" cy="110" r="90"/><circle id="ring" class="ring-fg '+r.cls+'" cx="110" cy="110" r="90" transform="rotate(-90 110 110)" data-c="'+c.toFixed(1)+'" data-p="'+r.score+'" style="stroke-dasharray:'+(c*r.score/100).toFixed(1)+' '+c.toFixed(1)+'"/><text class="rn" x="110" y="118" text-anchor="middle">'+r.score+'</text><text class="rl" x="110" y="142" text-anchor="middle">out of 100</text></svg>'+
+  '<span class="risk '+r.cls+'"><span class="rdot" style="display:inline-block;width:12px;height:12px;border-radius:50%;background:currentColor"></span>'+r.risk+'</span>'+
+  '<div class="mini"><div><b>'+r.counts[0]+'</b><span>High</span></div><div><b>'+r.counts[1]+'</b><span>Medium/Low</span></div><div><b>'+r.counts[2]+'</b><span>Checks passed</span></div></div></div>'+
+  '<div class="res-r"><h3 class="kh">Key findings</h3><ul class="kfl">'+r.findings.map(function(f){return '<li><button class="kf" data-act="evidence" data-f="'+f.id+'" aria-expanded="'+(v.open===f.id)+'"><span class="dot '+f.sev+'"></span><span class="kt">'+esc(f.t)+'</span><small>'+f.lab+'</small></button></li>'}).join('')+'</ul></div></div>'+
+  '<p class="calc" id="sumPanel">Score is indicative: it starts at 100 and reduces for each finding by severity. The officer decides.</p></section>'}
+function evHtml(b,v){
+  var f=RESULTS[b.sc].findings.filter(function(x){return x.id===v.open})[0];if(!f)return '';
+  function side(k,s,c){return '<div class="s'+(c?' c':'')+'"><div class="k">'+k+'</div><div class="d">'+esc(s.doc)+'</div><div class="v">'+esc(s.rows[s.hl][1])+'</div><button class="btn sm" data-act="src" data-f="'+f.id+'" data-side="'+k.toLowerCase()+'">View source</button></div>'}
+  return '<section class="panel" id="evPanel" tabindex="-1"><div class="panel-h">Evidence: '+esc(f.t)+' <button class="btn sm" data-act="closeev">Close</button></div><p class="claim">'+esc(f.claim)+'</p><div class="cmp">'+side('A',f.a,true)+'<div class="vs">vs</div>'+side('B',f.b,false)+'</div><div class="mismatch">'+esc(f.msg)+'</div></section>'}
+function decHtml(b,v){
+  if(v.decision){var d=v.decision;return '<section class="panel rec" id="recBox" tabindex="-1"><span class="chip ok">Decision recorded</span><h3>'+esc(d.t)+'</h3><p>Reference '+esc(d.ref)+' · '+esc(d.at)+'</p>'+(d.remarks?'<p>Remarks: '+esc(d.remarks)+'</p>':'')+'</section>'}
+  return '<section class="panel"><div class="panel-h">4. Your decision</div><fieldset class="opts" style="border:0"><legend class="sr">Decision</legend>'+
+  DEC.map(function(d){return '<label class="opt"><input type="radio" name="dec" value="'+d.k+'"'+(v.choice===d.k?' checked':'')+'><span><b>'+d.t+'</b><span>'+d.d+'</span></span></label>'}).join('')+'</fieldset>'+
+  '<div class="remarks"><label for="remarks">Remarks</label><textarea id="remarks">'+esc(v.remarks)+'</textarea><p id="hint" class="calc" style="padding:4px 0;border:0;background:none">'+hintText(b,v)+'</p><p class="err" id="err" role="alert">'+esc(v.error)+'</p></div>'+
+  '<div class="actionbar"><span>Findings support you. You make the decision.</span><button class="btn primary" data-act="submit">Record decision</button></div></section>'}
+
+function render(focus){
+  var m=$('#main'),html='';
+  var b=S.bid?bidById(S.bid):null;
+  if(S.view==='bid'&&b)html=viewBid(b);
+  else html=({dashboard:viewDashboard,bids:viewBids,mywork:viewMywork,tenders:viewTenders,documents:viewDocuments,verification:viewVerification,reports:viewReports}[S.view]||viewDashboard)();
+  m.innerHTML=html;
+  var cur=S.view==='bid'?'bids':S.view;
+  ['topnav','sidenav'].forEach(function(id){
+    document.querySelectorAll('#'+id+' button').forEach(function(x){
+      var v=x.getAttribute('data-view'),on=(v===cur)||(id==='topnav'&&v==='dashboard'&&cur==='dashboard');
+      if(on)x.setAttribute('aria-current','page');else x.removeAttribute('aria-current');
+    });
+  });
+  if(focus){m.focus({preventScroll:true});window.scrollTo({top:0})}
+  animRing();
+}
+function animRing(){
+  var r=$('#ring');if(!r||reduce)return;
+  var c=+r.getAttribute('data-c'),p=+r.getAttribute('data-p');
+  r.style.transition='none';r.style.strokeDasharray='0 '+c;
+  requestAnimationFrame(function(){requestAnimationFrame(function(){r.style.transition='';r.style.strokeDasharray=(c*p/100)+' '+c})});
+}
+function showing(id){return S.view==='bid'&&S.bid===id&&S.tab==='ver'}
+function sv(el){if(el)el.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'})}
+
+/* ---------- verification run ---------- */
+function runVerify(b){
+  var v=V(b);
+  v.stage='running';v.step=0;v.open=null;v.decision=null;v.choice=null;v.remarks='';v.error='';
+  if(showing(b.id)){render();sv($('#procBox'))}
+  var gap=reduce?250:750;
+  (function tick(){
+    setTimeout(function(){
+      v.step++;
+      if(showing(b.id)){
+        $('#procBox').innerHTML=procHtml(b,v);
+      }
+      if(v.step<STEPS.length){tick()}
+      else{
+        setTimeout(function(){
+          v.stage='done';v.ran++;
+          if(showing(b.id)){render();sv($('#resPanel'))}
+        },gap*.8);
+      }
+    },gap);
+  })();
+}
+
+/* ---------- events ---------- */
+document.addEventListener('click',function(e){
+  var t=e.target.closest('[data-act]');
+  var pop=$('#pop');
+  if(!t){ if(!e.target.closest('#pop')){pop.hidden=true;$('#bell').setAttribute('aria-expanded','false')} return; }
+  var a=t.getAttribute('data-act'),b=S.bid?bidById(S.bid):null;
+  if(a!=='bell'){pop.hidden=true;$('#bell').setAttribute('aria-expanded','false')}
+  if(a==='nav'){e.preventDefault();S.view=t.getAttribute('data-view');S.bid=null;if(S.view!=='bids')S.q='';$('#side').classList.remove('open');render(true)}
+  else if(a==='open'){S.view='bid';S.bid=t.getAttribute('data-bid');S.tab=t.getAttribute('data-tab')||'details';render(true)}
+  else if(a==='tab'){S.tab=t.getAttribute('data-tab');render();var tb=$('#tab-'+S.tab);if(tb)tb.focus()}
+  else if(a==='verify'&&b){runVerify(b)}
+  else if(a==='evidence'&&b){var v=V(b);v.open=t.getAttribute('data-f');$('#evBox').innerHTML=evHtml(b,v);document.querySelectorAll('[data-act="evidence"]').forEach(function(x){x.setAttribute('aria-expanded',String(x.getAttribute('data-f')===v.open))});var p=$('#evPanel');sv(p);if(p)p.focus({preventScroll:true})}
+  else if(a==='summary'){sv($('#sumPanel'))}
+  else if(a==='closeev'&&b){var v2=V(b);v2.open=null;$('#evBox').innerHTML='';document.querySelectorAll('[data-act="evidence"]').forEach(function(x){x.setAttribute('aria-expanded','false')})}
+  else if(a==='src'&&b){openSrc(b,t.getAttribute('data-f'),t.getAttribute('data-side'))}
+  else if(a==='closedlg'){$('#dlg').close?$('#dlg').close():$('#dlg').removeAttribute('open')}
+  else if(a==='submit'&&b){submit(b)}
+  else if(a==='bell'){var open=pop.hidden;pop.hidden=!open;t.setAttribute('aria-expanded',String(open))}
+  else if(a==='menu'){var sd=$('#side'),o=sd.classList.toggle('open');t.setAttribute('aria-expanded',String(o))}
+  else if(a==='fs'){document.documentElement.style.fontSize=t.getAttribute('data-v')}
+});
+document.addEventListener('change',function(e){
+  var b=S.bid?bidById(S.bid):null;if(!b)return;var v=V(b);
+  if(e.target.matches('[data-doc]')){
+    v.docs[+e.target.getAttribute('data-doc')].on=e.target.checked;
+    var n=v.docs.filter(function(d){return d.on}).length;
+    $('#cnt').textContent=n+' of '+v.docs.length+' documents selected';
+    $('#verifyBtn').disabled=(n===0||v.stage==='running');
+  }else if(e.target.id==='addf'&&e.target.files[0]){
+    var f=e.target.files[0];
+    v.docs.push({n:f.name.replace(/\.[^.]+$/,''),f:f.name,p:'–',s:(f.size>1048576?(f.size/1048576).toFixed(1)+' MB':Math.max(1,Math.round(f.size/1024))+' KB'),on:true,added:true});
+    render();
+  }else if(e.target.name==='dec'){
+    v.choice=e.target.value;v.error='';$('#hint').textContent=hintText(b,v);$('#err').textContent='';
+  }
+});
+document.addEventListener('input',function(e){
+  if(e.target.id==='remarks'&&S.bid){V(bidById(S.bid)).remarks=e.target.value}
+});
+$('#searchForm').addEventListener('submit',function(e){e.preventDefault();S.q=$('#q').value.trim();S.view='bids';S.bid=null;render(true)});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){$('#pop').hidden=true}});
+
+function submit(b){
+  var v=V(b);
+  if(!v.choice){v.error='Select a decision before recording it.';$('#err').textContent=v.error;return}
+  if(needRemarks(b,v.choice)&&!v.remarks.trim()){v.error='Add remarks explaining your decision.';$('#err').textContent=v.error;$('#remarks').focus();return}
+  var d=DEC.filter(function(x){return x.k===v.choice})[0];
+  v.decision={k:d.k,t:d.t,st:d.st,remarks:v.remarks.trim(),ref:'DEC-'+b.id.split('/').pop()+'-'+String(Math.floor(Math.random()*9000)+1000),at:new Date().toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'})};
+  $('#decBox').innerHTML=decHtml(b,v);var r=$('#recBox');if(r)r.focus();
+}
+function openSrc(b,fid,side){
+  var f=RESULTS[b.sc].findings.filter(function(x){return x.id===fid})[0],s=f[side];
+  $('#dlgT').textContent=s.doc+(s.page?' · Page '+s.page:'');
+  $('#dlgB').innerHTML='<div class="paper"><h4>'+esc(s.doc)+'</h4><table><tbody>'+s.rows.map(function(r,i){return '<tr'+(i===s.hl?' class="hl"':'')+'><td>'+esc(r[0])+'</td><td>'+esc(r[1])+'</td></tr>'}).join('')+'</tbody></table><div class="pg">'+(s.page?'Page '+s.page+' · highlighted line is the evidence':'Sample view of the submitted document set')+'</div></div>';
+  var d=$('#dlg');if(d.showModal)d.showModal();else d.setAttribute('open','');
+}
+render();
+</script>
+</body>
+</html>
